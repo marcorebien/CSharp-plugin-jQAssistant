@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jqassistant-plugin
+        xmlns="http://schema.jqassistant.org/plugin/v2.7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://schema.jqassistant.org/plugin/v2.7
+                            https://schema.jqassistant.org/plugin/jqassistant-plugin-v2.7.xsd"
+        id="jqassistant.plugin.csharp"
+        name="jQAssistant CSharp Plugin"
+        version="${project.version}">
+
+    <description>
+        jQAssistant plugin for analyzing C# projects using Roslyn and mapping
+        the structure into the jQAssistant graph model.
+    </description>
+
+    <!-- Domain Model Definitions (Descriptors / Labels) -->
+    <model>
+        <!-- Namespace -->
+        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpNamespaceDescriptor"/>
+
+        <!-- Types -->
+        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpTypeDescriptor"/>
+        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpClassDescriptor"/>
+        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpInterfaceDescriptor"/>
+
+        <!-- Members -->
+        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpMethodDescriptor"/>
+        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpPropertyDescriptor"/>
+        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpFieldDescriptor"/>
+        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpParameterDescriptor"/>
+    </model>
+
+    <!-- Optional: A custom scope, if the plugin defines one -->
+    <scope>
+        <class>org.jqassistant.plugin.csharp.api.CSharpScope</class>
+    </scope>
+
+    <!-- Scanner Plugin Implementation -->
+    <scanner>
+        <class>org.jqassistant.plugin.csharp.impl.plugin.CSharpPlugin</class>
+        <class>org.jqassistant.plugin.csharp.impl.plugin.CSharpScanner</class>
+    </scanner>
+
+</jqassistant-plugin>
