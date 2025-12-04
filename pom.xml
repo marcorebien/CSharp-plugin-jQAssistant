@@ -46,10 +46,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- ------------------------- -->
-        <!--        TESTING            -->
-        <!-- ------------------------- -->
-
         <!-- jQA Test Plugin -->
         <dependency>
             <groupId>com.buschmais.jqassistant.core</groupId>
