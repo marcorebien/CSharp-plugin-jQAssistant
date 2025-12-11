@@ -7,7 +7,6 @@ import java.util.Objects;
 /**
  * Represents a C# class with fields, properties, methods, a base class
  * and implemented interfaces.
- *
  * UML:
  * - inherits CSharpType
  * - baseClass : String
