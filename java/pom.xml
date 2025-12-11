@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Der *richtige* Parent für jQAssistant Plugins -->
+    <parent>
+        <groupId>org.jqassistant.plugin</groupId>
+        <artifactId>parent</artifactId>
+        <version>2.6.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>org.jqassistant.plugin.csharp</groupId>
+    <artifactId>csharp-plugin</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>jQAssistant CSharp Plugin</name>
+    <description>The jQAssistant plugin providing scanners for CSharp.</description>
+    <url>https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</url>
+
+    <dependencies>
+        <!-- Runtime Dependencies -->
+        <dependency>
+            <groupId>com.buschmais.jqassistant.core</groupId>
+            <artifactId>scanner</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.buschmais.jqassistant.plugin</groupId>
+            <artifactId>common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- jQA Test Support -->
+        <dependency>
+            <groupId>com.buschmais.jqassistant.core</groupId>
+            <artifactId>test</artifactId>
+            <version>2.6.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.buschmais.jqassistant.plugin</groupId>
+            <artifactId>common</artifactId>
+            <type>test-jar</type>
+            <version>2.6.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- AssertJ -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <developers>
+        <developer>
+            <id>MarcoRebien</id>
+            <name>Marco Rebien</name>
+            <email>marco.rebien@codecentric.de</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</connection>
+        <developerConnection>scm:git:https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</developerConnection>
+        <url>https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</url>
+    </scm>
+</project>
