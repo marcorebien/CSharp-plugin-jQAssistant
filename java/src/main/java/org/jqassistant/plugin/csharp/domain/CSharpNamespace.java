@@ -6,8 +6,7 @@ import java.util.Objects;
 
 /**
  * Represents a C# namespace containing classes, interfaces, or other types.
- * UML: CSharpNamespace → name : String, types : List<CSharpType>
- */
+*/
 public class CSharpNamespace {
 
     private final String name;

@@ -6,8 +6,7 @@ import java.util.Objects;
 
 /**
  * Represents a C# project containing one or more namespaces.
- * Matches UML: CSharpProject → namespaces : List<CSharpNamespace>
- */
+*/
 public class CSharpProject {
 
     private final List<CSharpNamespace> namespaces = new ArrayList<>();

@@ -6,11 +6,6 @@ import java.util.Objects;
 
 /**
  * Represents a C# interface with methods and extended interfaces.
- *
- * UML:
- * - inherits CSharpType
- * - interfaces : List<String>
- * - methods : List<CSharpMethod>
  */
 public class CSharpInterface extends CSharpType {
 

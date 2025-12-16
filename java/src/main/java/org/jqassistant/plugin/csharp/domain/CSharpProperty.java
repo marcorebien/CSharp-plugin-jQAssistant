@@ -4,11 +4,7 @@ import java.util.Objects;
 
 /**
  * Represents a C# property.
- *
- * UML:
- * - name : String
- * - type : String
- */
+*/
 public class CSharpProperty {
 
     private final String name;

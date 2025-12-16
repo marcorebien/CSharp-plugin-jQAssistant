@@ -4,10 +4,7 @@ import java.util.Objects;
 
 /**
  * Represents a C# field.
- *
- * UML:
- * - name : String
- * - type : String
+
  */
 public class CSharpField {
 

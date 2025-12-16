@@ -6,11 +6,7 @@ import java.util.Objects;
 
 /**
  * Abstract base class for all C# types (classes, interfaces, structs, etc.).
- * Matches UML definition:
- * - name : String
- * - namespace : String
- * - modifiers : List<String>
- */
+*/
 public abstract class CSharpType {
 
     private final String name;

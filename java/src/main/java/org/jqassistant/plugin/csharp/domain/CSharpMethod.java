@@ -6,12 +6,7 @@ import java.util.Objects;
 
 /**
  * Represents a C# method with name, return type and parameters.
- *
- * UML:
- * - name : String
- * - returnType : String
- * - parameters : List<CSharpParameter>
- */
+*/
 public class CSharpMethod {
 
     private final String name;

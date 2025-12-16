@@ -4,10 +4,7 @@ import java.util.Objects;
 
 /**
  * Represents a method parameter in C#.
- * UML:
- * - name : String
- * - type : String
- */
+*/
 public class CSharpParameter {
 
     private final String name;
