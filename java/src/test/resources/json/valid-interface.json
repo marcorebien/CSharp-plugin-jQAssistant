@@ -1,0 +1,30 @@
+{
+  "namespaces": [
+    {
+      "name": "MyApp.Services",
+      "types": [
+        {
+          "kind": "interface",
+          "name": "IMyService",
+          "namespace": "MyApp.Services",
+          "modifiers": ["public"],
+          "interfaces": [
+            "IDisposable"
+          ],
+          "methods": [
+            {
+              "name": "Execute",
+              "returnType": "void",
+              "parameters": [
+                {
+                  "name": "input",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

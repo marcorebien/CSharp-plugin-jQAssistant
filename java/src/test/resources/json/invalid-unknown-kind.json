@@ -1,0 +1,14 @@
+{
+  "namespaces": [
+    {
+      "name": "Test",
+      "types": [
+        {
+          "kind": "unknown",
+          "name": "Broken",
+          "namespace": "Test"
+        }
+      ]
+    }
+  ]
+}

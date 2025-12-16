@@ -1,0 +1,32 @@
+{
+  "namespaces": [
+    {
+      "name": "Example.Namespace",
+      "types": [
+        {
+          "kind": "class",
+          "name": "MyClass",
+          "namespace": "Example.Namespace",
+          "modifiers": ["public"],
+          "baseClass": "BaseClass",
+          "interfaces": ["IMyInterface"],
+          "fields": [
+            { "name": "field1", "type": "int" }
+          ],
+          "properties": [
+            { "name": "Property1", "type": "string" }
+          ],
+          "methods": [
+            {
+              "name": "DoSomething",
+              "returnType": "void",
+              "parameters": [
+                { "name": "value", "type": "int" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
