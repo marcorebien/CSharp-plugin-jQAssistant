@@ -9,6 +9,8 @@ import java.util.Objects;
  */
 public class CSharpInterface extends CSharpType {
 
+    private boolean isStatic;
+
     private final List<String> interfaces = new ArrayList<>();
     private final List<CSharpMethod> methods = new ArrayList<>();
 
@@ -16,9 +18,16 @@ public class CSharpInterface extends CSharpType {
         super(name, namespace);
     }
 
-    // Convenience constructor for tests
     public CSharpInterface(String name) {
         this(name, "");
+    }
+
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    public void setStatic(boolean value) {
+        this.isStatic = value;
     }
 
     public List<String> getInterfaces() {
@@ -37,15 +46,5 @@ public class CSharpInterface extends CSharpType {
     public void addMethod(CSharpMethod method) {
         Objects.requireNonNull(method, "method must not be null");
         methods.add(method);
-    }
-
-    @Override
-    public String toString() {
-        return "CSharpInterface{" +
-                "name='" + getName() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", interfaces=" + interfaces +
-                ", methods=" + methods +
-                '}';
     }
 }

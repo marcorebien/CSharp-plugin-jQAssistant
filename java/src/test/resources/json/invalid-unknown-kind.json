@@ -1,12 +1,12 @@
 {
   "namespaces": [
     {
-      "name": "Test",
+      "name": "Broken",
       "types": [
         {
           "kind": "unknown",
-          "name": "Broken",
-          "namespace": "Test"
+          "name": "Foo",
+          "namespace": "Broken"
         }
       ]
     }

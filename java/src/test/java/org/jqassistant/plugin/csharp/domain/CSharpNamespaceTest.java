@@ -1,25 +1,37 @@
 package org.jqassistant.plugin.csharp.domain;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CSharpNamespaceTest {
 
     @Test
-    void shouldCreateNamespaceWithName() {
-        CSharpNamespace ns = new CSharpNamespace("MyApp.Services");
-
-        assertEquals("MyApp.Services", ns.getName());
-        assertTrue(ns.getTypes().isEmpty());
+    void shouldCreateNamespace() {
+        CSharpNamespace ns = new CSharpNamespace("Example.Core");
+        assertEquals("Example.Core", ns.getName());
+        assertEquals("Example.Core", ns.getFullName());
     }
 
     @Test
-    void shouldAddTypes() {
-        CSharpNamespace ns = new CSharpNamespace("MyApp");
+    void shouldAddType() {
+        CSharpNamespace ns = new CSharpNamespace("Example");
+        CSharpClass cls = new CSharpClass("MyClass", "Example");
 
-        ns.addType(new CSharpClass("User"));
-        ns.addType(new CSharpInterface("IUser"));
+        ns.addType(cls);
 
-        assertEquals(2, ns.getTypes().size());
+        assertEquals(1, ns.getTypes().size());
+        assertSame(cls, ns.getTypes().get(0));
+    }
+
+    @Test
+    void shouldRejectNullName() {
+        assertThrows(NullPointerException.class, () -> new CSharpNamespace(null));
+    }
+
+    @Test
+    void shouldRejectNullType() {
+        CSharpNamespace ns = new CSharpNamespace("Example");
+        assertThrows(NullPointerException.class, () -> ns.addType(null));
     }
 }

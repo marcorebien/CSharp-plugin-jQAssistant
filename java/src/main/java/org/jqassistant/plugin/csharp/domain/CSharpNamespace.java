@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a C# namespace containing classes, interfaces, or other types.
-*/
+ * Represents a C# namespace containing types.
+ */
 public class CSharpNamespace {
 
     private final String name;
@@ -20,21 +20,20 @@ public class CSharpNamespace {
         return name;
     }
 
+    /**
+     * Returns the fully qualified namespace name.
+     * (For now identical to name, but kept for symmetry with types.)
+     */
+    public String getFullName() {
+        return name;
+    }
+
     public List<CSharpType> getTypes() {
         return types;
     }
 
-    /** Adds a class or interface (or any CSharpType subclass) to this namespace. */
     public void addType(CSharpType type) {
         Objects.requireNonNull(type, "type must not be null");
-        this.types.add(type);
-    }
-
-    @Override
-    public String toString() {
-        return "CSharpNamespace{" +
-                "name='" + name + '\'' +
-                ", types=" + types +
-                '}';
+        types.add(type);
     }
 }

@@ -1,26 +1,18 @@
 {
   "namespaces": [
     {
-      "name": "MyApp.Services",
+      "name": "Contracts",
       "types": [
         {
           "kind": "interface",
-          "name": "IMyService",
-          "namespace": "MyApp.Services",
-          "modifiers": ["public"],
-          "interfaces": [
-            "IDisposable"
-          ],
+          "name": "IService",
+          "namespace": "Contracts",
+          "interfaces": ["IDisposable"],
           "methods": [
             {
-              "name": "Execute",
+              "name": "Run",
               "returnType": "void",
-              "parameters": [
-                {
-                  "name": "input",
-                  "type": "string"
-                }
-              ]
+              "parameters": []
             }
           ]
         }

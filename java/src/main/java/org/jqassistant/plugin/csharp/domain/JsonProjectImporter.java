@@ -15,7 +15,13 @@ public class JsonProjectImporter {
                     objectMapper.readValue(jsonStream, JsonProjectDto.class);
 
             return mapProject(dto);
+
+        } catch (IllegalArgumentException e) {
+            // semantische Fehler bewusst durchreichen
+            throw e;
+
         } catch (Exception e) {
+            // technische Fehler
             throw new IllegalStateException("Failed to import C# project JSON", e);
         }
     }
@@ -23,11 +29,13 @@ public class JsonProjectImporter {
     private CSharpProject mapProject(JsonProjectDto dto) {
         CSharpProject project = new CSharpProject();
 
-        if (dto.namespaces != null) {
-            dto.namespaces.forEach(ns ->
-                    project.addNamespace(mapNamespace(ns))
-            );
+        if (dto.namespaces == null) {
+            return project;
         }
+
+        dto.namespaces.forEach(ns ->
+                project.addNamespace(mapNamespace(ns))
+        );
 
         return project;
     }
@@ -57,20 +65,20 @@ public class JsonProjectImporter {
     private CSharpClass mapClass(JsonClassDto dto) {
         CSharpClass cls = new CSharpClass(dto.name, dto.namespace);
 
+        if (dto.baseClass != null) {
+            cls.setBaseType(dto.baseClass);
+        }
+
         if (dto.modifiers != null) {
             dto.modifiers.forEach(cls::addModifier);
         }
 
-        cls.setBaseClass(dto.baseClass);
-
         if (dto.interfaces != null) {
-            dto.interfaces.forEach(cls::addInterface);
+            dto.interfaces.forEach(cls::implementInterface);
         }
 
         if (dto.methods != null) {
-            dto.methods.forEach(m ->
-                    cls.addMethod(mapMethod(m))
-            );
+            dto.methods.forEach(m -> cls.addMethod(mapMethod(m)));
         }
 
         if (dto.fields != null) {
@@ -87,6 +95,8 @@ public class JsonProjectImporter {
 
         return cls;
     }
+
+
 
     private CSharpInterface mapInterface(JsonInterfaceDto dto) {
         CSharpInterface iface = new CSharpInterface(dto.name, dto.namespace);

@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a C# class with fields, properties, methods, a base class
- * and implemented interfaces.
+ * Represents a C# class declaration with semantic properties.
  */
 public class CSharpClass extends CSharpType {
 
-    private String baseClass;
-    private final List<String> interfaces = new ArrayList<>();
+    private boolean isAbstract;
+    private boolean isSealed;
+    private boolean isStatic;
+
+    private String baseType; // fully qualified name for now
+
+    private final List<String> implementedInterfaces = new ArrayList<>();
     private final List<CSharpMethod> methods = new ArrayList<>();
     private final List<CSharpField> fields = new ArrayList<>();
     private final List<CSharpProperty> properties = new ArrayList<>();
@@ -20,26 +24,46 @@ public class CSharpClass extends CSharpType {
         super(name, namespace);
     }
 
-    // Convenience constructor for tests where namespace is irrelevant
-    public CSharpClass(String name) {
-        this(name, "");
+    public boolean isAbstract() {
+        return isAbstract;
     }
 
-    public String getBaseClass() {
-        return baseClass;
+    public void setAbstract(boolean value) {
+        this.isAbstract = value;
     }
 
-    public void setBaseClass(String baseClass) {
-        this.baseClass = baseClass;
+    public boolean isSealed() {
+        return isSealed;
     }
 
-    public List<String> getInterfaces() {
-        return interfaces;
+    public void setSealed(boolean value) {
+        this.isSealed = value;
     }
 
-    public void addInterface(String interfaceName) {
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    public void setStatic(boolean value) {
+        this.isStatic = value;
+    }
+
+    public String getBaseType() {
+        return baseType;
+    }
+
+    public void setBaseType(String baseType) {
+        this.baseType = baseType;
+    }
+
+
+    public List<String> getImplementedInterfaces() {
+        return implementedInterfaces;
+    }
+
+    public void implementInterface(String interfaceName) {
         Objects.requireNonNull(interfaceName, "interface name must not be null");
-        interfaces.add(interfaceName);
+        implementedInterfaces.add(interfaceName);
     }
 
     public List<CSharpMethod> getMethods() {
@@ -67,18 +91,5 @@ public class CSharpClass extends CSharpType {
     public void addProperty(CSharpProperty property) {
         Objects.requireNonNull(property, "property must not be null");
         properties.add(property);
-    }
-
-    @Override
-    public String toString() {
-        return "CSharpClass{" +
-                "name='" + getName() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", baseClass='" + baseClass + '\'' +
-                ", interfaces=" + interfaces +
-                ", methods=" + methods +
-                ", fields=" + fields +
-                ", properties=" + properties +
-                '}';
     }
 }

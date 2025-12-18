@@ -28,14 +28,23 @@ class CSharpMethodTest {
     }
 
     @Test
-    void shouldReplaceFullParameterList() {
+    void shouldAddMultipleParameters() {
         CSharpMethod method = new CSharpMethod("Test", "void");
 
-        method.setParameters(List.of(
-                new CSharpParameter("x", "int"),
-                new CSharpParameter("y", "string")
-        ));
+        method.addParameter(new CSharpParameter("x", "int"));
+        method.addParameter(new CSharpParameter("y", "string"));
 
         assertEquals(2, method.getParameters().size());
     }
+
+
+    @Test
+    void methodDefaultsAreCorrect() {
+        CSharpMethod m = new CSharpMethod("Run", "void");
+
+        assertEquals(CSharpVisibility.PRIVATE, m.getVisibility());
+        assertFalse(m.isStatic());
+        assertFalse(m.isAbstract());
+    }
+
 }
