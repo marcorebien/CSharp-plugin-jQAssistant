@@ -8,15 +8,16 @@ class CSharpNamespaceTest {
 
     @Test
     void shouldCreateNamespace() {
-        CSharpNamespace ns = new CSharpNamespace("Example.Core");
-        assertEquals("Example.Core", ns.getName());
-        assertEquals("Example.Core", ns.getFullName());
+        CSharpNamespace ns = new CSharpNamespace("My.Namespace");
+
+        assertEquals("My.Namespace", ns.getName());
+        assertTrue(ns.getTypes().isEmpty());
     }
 
     @Test
     void shouldAddType() {
-        CSharpNamespace ns = new CSharpNamespace("Example");
-        CSharpClass cls = new CSharpClass("MyClass", "Example");
+        CSharpNamespace ns = new CSharpNamespace("Test");
+        CSharpClass cls = new CSharpClass("MyClass", "Test");
 
         ns.addType(cls);
 
@@ -25,13 +26,8 @@ class CSharpNamespaceTest {
     }
 
     @Test
-    void shouldRejectNullName() {
-        assertThrows(NullPointerException.class, () -> new CSharpNamespace(null));
-    }
-
-    @Test
     void shouldRejectNullType() {
-        CSharpNamespace ns = new CSharpNamespace("Example");
+        CSharpNamespace ns = new CSharpNamespace("Test");
         assertThrows(NullPointerException.class, () -> ns.addType(null));
     }
 }

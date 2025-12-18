@@ -1,42 +1,26 @@
 package org.jqassistant.plugin.csharp.domain;
 
+import org.jqassistant.plugin.csharp.domain.enums.CSharpTypeKind;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Represents a C# interface with methods and extended interfaces.
- */
 public class CSharpInterface extends CSharpType {
 
-    private boolean isStatic;
-
-    private final List<String> interfaces = new ArrayList<>();
+    private final List<String> extendedInterfaces = new ArrayList<>();
     private final List<CSharpMethod> methods = new ArrayList<>();
 
     public CSharpInterface(String name, String namespace) {
-        super(name, namespace);
+        super(name, namespace, CSharpTypeKind.INTERFACE);
     }
 
-    public CSharpInterface(String name) {
-        this(name, "");
+    public List<String> getExtendedInterfaces() {
+        return extendedInterfaces;
     }
 
-    public boolean isStatic() {
-        return isStatic;
-    }
-
-    public void setStatic(boolean value) {
-        this.isStatic = value;
-    }
-
-    public List<String> getInterfaces() {
-        return interfaces;
-    }
-
-    public void addInterface(String interfaceName) {
-        Objects.requireNonNull(interfaceName, "interface name must not be null");
-        interfaces.add(interfaceName);
+    public void extendInterface(String name) {
+        extendedInterfaces.add(Objects.requireNonNull(name));
     }
 
     public List<CSharpMethod> getMethods() {
@@ -44,7 +28,6 @@ public class CSharpInterface extends CSharpType {
     }
 
     public void addMethod(CSharpMethod method) {
-        Objects.requireNonNull(method, "method must not be null");
-        methods.add(method);
+        methods.add(Objects.requireNonNull(method));
     }
 }

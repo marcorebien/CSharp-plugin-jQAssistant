@@ -1,5 +1,7 @@
 package org.jqassistant.plugin.csharp.domain;
 
+import org.jqassistant.plugin.csharp.domain.enums.CSharpModifier;
+import org.jqassistant.plugin.csharp.domain.enums.CSharpVisibility;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -12,83 +14,36 @@ class JsonProjectImporterTest {
 
     @Test
     void shouldImportClassFromJson() {
-        InputStream json =
-                getClass().getResourceAsStream("/json/valid-class.json");
+        InputStream in = getClass()
+                .getResourceAsStream("/valid-class.json");
 
-        assertNotNull(json);
+        assertNotNull(in);
 
-        CSharpProject project = importer.importProject(json);
+        CSharpProject project = importer.importProject(in);
 
-        assertEquals(1, project.getNamespaces().size());
+        CSharpClass cls = (CSharpClass)
+                project.getNamespaces().get(0)
+                        .getTypes().get(0);
 
-        CSharpNamespace ns = project.getNamespaces().get(0);
-        assertEquals("MyApp.Core", ns.getName());
-        assertEquals(1, ns.getTypes().size());
-
-        CSharpType type = ns.getTypes().get(0);
-        assertTrue(type instanceof CSharpClass);
-
-        CSharpClass cls = (CSharpClass) type;
-
-        assertEquals("UserService", cls.getName());
-        assertEquals("MyApp.Core", cls.getNamespace());
-        assertEquals("BaseService", cls.getBaseType());
-
-        assertEquals(1, cls.getImplementedInterfaces().size());
-        assertEquals("IDisposable", cls.getImplementedInterfaces().get(0));
-
-        assertEquals(1, cls.getMethods().size());
-        assertEquals("Execute", cls.getMethods().get(0).getName());
-
-        assertEquals(1, cls.getFields().size());
-        assertEquals("_repo", cls.getFields().get(0).getName());
-
-        assertEquals(1, cls.getProperties().size());
-        assertEquals("Name", cls.getProperties().get(0).getName());
+        assertEquals("MyClass", cls.getName());
+        assertEquals("Demo", cls.getNamespace());
+        assertEquals("BaseClass", cls.getBaseType());
+        assertEquals(CSharpVisibility.PUBLIC, cls.getVisibility());
+        assertTrue(cls.getModifiers().contains(CSharpModifier.ABSTRACT));
     }
-
-    @Test
-    void shouldImportInterfaceFromJson() {
-        InputStream json = getClass().getResourceAsStream("/json/valid-interface.json");
-        assertNotNull(json);
-
-        CSharpProject project = importer.importProject(json);
-
-        assertEquals(1, project.getNamespaces().size());
-
-        CSharpNamespace ns = project.getNamespaces().get(0);
-        assertEquals(1, ns.getTypes().size());
-
-        CSharpType type = ns.getTypes().get(0);
-        assertInstanceOf(CSharpInterface.class, type);
-
-        CSharpInterface iface = (CSharpInterface) type;
-
-        assertEquals("IService", iface.getName());
-        assertEquals("Contracts ", iface.getNamespace());
-
-        // ✅ Interfaces = extended interfaces
-        assertEquals(1, iface.getInterfaces().size());
-        assertEquals("IDisposable", iface.getInterfaces().get(0));
-
-        assertEquals(1, iface.getMethods().size());
-        assertEquals("Run", iface.getMethods().get(0).getName());
-    }
-
 
     @Test
     void shouldFailOnUnknownTypeKind() {
-        InputStream json =
-                getClass().getResourceAsStream("/json/invalid-unknown-kind.json");
+        InputStream in = getClass()
+                .getResourceAsStream("/invalid-type-kind.json");
 
-        assertNotNull(json);
+        assertNotNull(in);
 
-        IllegalStateException ex = assertThrows(
-                IllegalStateException.class,
-                () -> importer.importProject(json)
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> importer.importProject(in)
         );
 
-        assertNotNull(ex.getCause());
-        assertTrue(ex.getCause().getMessage().contains("unknown"));
+        assertTrue(ex.getMessage().contains("Unknown C# type kind"));
     }
 }

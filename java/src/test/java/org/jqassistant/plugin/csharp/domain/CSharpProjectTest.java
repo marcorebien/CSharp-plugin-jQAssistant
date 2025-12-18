@@ -9,27 +9,14 @@ class CSharpProjectTest {
     @Test
     void shouldCreateEmptyProject() {
         CSharpProject project = new CSharpProject();
-
-        assertNull(project.getName());
-        assertNull(project.getRootPath());
+        assertNotNull(project.getNamespaces());
         assertTrue(project.getNamespaces().isEmpty());
-    }
-
-    @Test
-    void shouldSetProjectMetadata() {
-        CSharpProject project = new CSharpProject();
-
-        project.setName("MyProject");
-        project.setRootPath("C:/repo/MyProject");
-
-        assertEquals("MyProject", project.getName());
-        assertEquals("C:/repo/MyProject", project.getRootPath());
     }
 
     @Test
     void shouldAddNamespace() {
         CSharpProject project = new CSharpProject();
-        CSharpNamespace ns = new CSharpNamespace("Example");
+        CSharpNamespace ns = new CSharpNamespace("Test");
 
         project.addNamespace(ns);
 

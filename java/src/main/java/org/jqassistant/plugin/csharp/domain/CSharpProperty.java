@@ -1,11 +1,9 @@
 package org.jqassistant.plugin.csharp.domain;
 
+import org.jqassistant.plugin.csharp.domain.enums.CSharpVisibility;
+
 import java.util.Objects;
 
-/**
- * Represents a C# property
- *
- */
 public class CSharpProperty {
 
     private final String name;
@@ -13,15 +11,11 @@ public class CSharpProperty {
 
     private boolean hasGetter;
     private boolean hasSetter;
-    private boolean isStatic;
-
-    private CSharpVisibility visibility = CSharpVisibility.INTERNAL;
-    private CSharpVisibility getterVisibility;
-    private CSharpVisibility setterVisibility;
+    private CSharpVisibility visibility = CSharpVisibility.PRIVATE;
 
     public CSharpProperty(String name, String type) {
-        this.name = Objects.requireNonNull(name, "Property name must not be null");
-        this.type = Objects.requireNonNull(type, "Property type must not be null");
+        this.name = Objects.requireNonNull(name);
+        this.type = Objects.requireNonNull(type);
     }
 
     public String getName() {
@@ -48,42 +42,11 @@ public class CSharpProperty {
         this.hasSetter = hasSetter;
     }
 
-    public boolean isStatic() {
-        return isStatic;
-    }
-
-    public void setStatic(boolean aStatic) {
-        isStatic = aStatic;
-    }
-
     public CSharpVisibility getVisibility() {
         return visibility;
     }
 
     public void setVisibility(CSharpVisibility visibility) {
-        this.visibility = Objects.requireNonNull(visibility, "visibility must not be null");
-    }
-
-    public CSharpVisibility getGetterVisibility() {
-        return getterVisibility;
-    }
-
-    public void setGetterVisibility(CSharpVisibility getterVisibility) {
-        this.getterVisibility = getterVisibility;
-    }
-
-    public CSharpVisibility getSetterVisibility() {
-        return setterVisibility;
-    }
-
-    public void setSetterVisibility(CSharpVisibility setterVisibility) {
-        this.setterVisibility = setterVisibility;
-    }
-
-    /**
-     * Convenience method: auto-property = getter + setter present.
-     */
-    public boolean isAutoProperty() {
-        return hasGetter && hasSetter;
+        this.visibility = Objects.requireNonNull(visibility);
     }
 }

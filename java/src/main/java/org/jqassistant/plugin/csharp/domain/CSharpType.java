@@ -1,8 +1,12 @@
 package org.jqassistant.plugin.csharp.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.jqassistant.plugin.csharp.domain.enums.CSharpModifier;
+import org.jqassistant.plugin.csharp.domain.enums.CSharpTypeKind;
+import org.jqassistant.plugin.csharp.domain.enums.CSharpVisibility;
+
+import java.util.EnumSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Abstract base class for all C# types (classes, interfaces, etc.).
@@ -11,13 +15,15 @@ public abstract class CSharpType {
 
     private final String name;
     private final String namespace;
+    private final CSharpTypeKind kind;
 
     private CSharpVisibility visibility = CSharpVisibility.INTERNAL;
-    private final List<String> modifiers = new ArrayList<>();
+    private final Set<CSharpModifier> modifiers = EnumSet.noneOf(CSharpModifier.class);
 
-    protected CSharpType(String name, String namespace) {
-        this.name = Objects.requireNonNull(name, "Type name must not be null");
-        this.namespace = Objects.requireNonNull(namespace, "Namespace must not be null");
+    protected CSharpType(String name, String namespace, CSharpTypeKind kind) {
+        this.name = Objects.requireNonNull(name, "name must not be null");
+        this.namespace = Objects.requireNonNull(namespace, "namespace must not be null");
+        this.kind = Objects.requireNonNull(kind, "kind must not be null");
     }
 
     public String getName() {
@@ -28,9 +34,10 @@ public abstract class CSharpType {
         return namespace;
     }
 
-    /**
-     * Returns the fully qualified C# type name.
-     */
+    public CSharpTypeKind getKind() {
+        return kind;
+    }
+
     public String getFullName() {
         return namespace.isEmpty() ? name : namespace + "." + name;
     }
@@ -40,15 +47,28 @@ public abstract class CSharpType {
     }
 
     public void setVisibility(CSharpVisibility visibility) {
-        this.visibility = Objects.requireNonNull(visibility, "visibility must not be null");
+        this.visibility = Objects.requireNonNull(visibility);
     }
 
-    public List<String> getModifiers() {
+    public Set<CSharpModifier> getModifiers() {
         return modifiers;
     }
 
-    public void addModifier(String modifier) {
-        Objects.requireNonNull(modifier, "modifier must not be null");
-        modifiers.add(modifier);
+    public void addModifier(CSharpModifier modifier) {
+        modifiers.add(Objects.requireNonNull(modifier));
+    }
+
+    /* --- Convenience semantics --- */
+
+    public boolean isAbstract() {
+        return modifiers.contains(CSharpModifier.ABSTRACT);
+    }
+
+    public boolean isStatic() {
+        return modifiers.contains(CSharpModifier.STATIC);
+    }
+
+    public boolean isSealed() {
+        return modifiers.contains(CSharpModifier.SEALED);
     }
 }

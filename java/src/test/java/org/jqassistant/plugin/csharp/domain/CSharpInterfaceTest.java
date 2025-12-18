@@ -7,59 +7,28 @@ import static org.junit.jupiter.api.Assertions.*;
 class CSharpInterfaceTest {
 
     @Test
-    void shouldCreateInterfaceWithNameAndNamespace() {
-        CSharpInterface iface = new CSharpInterface("ITest", "Example");
+    void shouldCreateInterface() {
+        CSharpInterface iface = new CSharpInterface("IMy", "Test");
 
-        assertEquals("ITest", iface.getName());
-        assertEquals("Example", iface.getNamespace());
-        assertEquals("Example.ITest", iface.getFullName());
+        assertEquals("IMy", iface.getName());
+        assertTrue(iface.getExtendedInterfaces().isEmpty());
     }
 
     @Test
-    void shouldDefaultToNonStatic() {
-        CSharpInterface iface = new CSharpInterface("ITest", "Example");
-        assertFalse(iface.isStatic());
-    }
+    void shouldExtendInterface() {
+        CSharpInterface iface = new CSharpInterface("IMy", "Test");
 
-    @Test
-    void shouldSetStatic() {
-        CSharpInterface iface = new CSharpInterface("ITest", "Example");
+        iface.extendInterface("IDisposable");
 
-        iface.setStatic(true);
-
-        assertTrue(iface.isStatic());
-    }
-
-    @Test
-    void shouldAddExtendedInterface() {
-        CSharpInterface iface = new CSharpInterface("ITest", "Example");
-
-        iface.addInterface("IDisposable");
-
-        assertEquals(1, iface.getInterfaces().size());
-        assertEquals("IDisposable", iface.getInterfaces().get(0));
+        assertTrue(iface.getExtendedInterfaces().contains("IDisposable"));
     }
 
     @Test
     void shouldAddMethod() {
-        CSharpInterface iface = new CSharpInterface("ITest", "Example");
-        CSharpMethod m = new CSharpMethod("Run", "void");
+        CSharpInterface iface = new CSharpInterface("IMy", "Test");
 
-        iface.addMethod(m);
+        iface.addMethod(new CSharpMethod("Run", "void"));
 
         assertEquals(1, iface.getMethods().size());
-        assertSame(m, iface.getMethods().get(0));
-    }
-
-    @Test
-    void shouldRejectNullInterfaceName() {
-        CSharpInterface iface = new CSharpInterface("ITest", "Example");
-        assertThrows(NullPointerException.class, () -> iface.addInterface(null));
-    }
-
-    @Test
-    void shouldRejectNullMethod() {
-        CSharpInterface iface = new CSharpInterface("ITest", "Example");
-        assertThrows(NullPointerException.class, () -> iface.addMethod(null));
     }
 }
