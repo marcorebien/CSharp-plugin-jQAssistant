@@ -1,0 +1,4 @@
+{
+  "namespaces": [
+    { "name": "X", "types": [ { "type": "class", "name": "A" } ] }
+  ]

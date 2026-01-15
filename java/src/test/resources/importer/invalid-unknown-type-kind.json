@@ -1,0 +1,17 @@
+{
+  "namespaces": [
+    {
+      "name": "BrokenNs",
+      "types": [
+        {
+          "type": "nonsense",
+          "name": "BrokenType",
+          "namespace": "BrokenNs",
+          "fullName": "BrokenNs.BrokenType",
+          "visibility": "public",
+          "modifiers": []
+        }
+      ]
+    }
+  ]
+}

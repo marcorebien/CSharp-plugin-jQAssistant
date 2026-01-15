@@ -49,8 +49,8 @@ public static class JsonExporter
         {
             writer.WriteStartObject();
 
-            // ✅ Single discriminator for Java: "kind"
-            writer.WriteString("kind", ToKindString(value.Kind));
+            // ✅ Single discriminator for Java: "type"
+            writer.WriteString("type", ToKindString(value.Kind));
 
             // Base fields
             writer.WriteString("name", value.Name);

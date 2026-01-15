@@ -104,11 +104,9 @@ public class JsonProjectImporter {
             throw new IllegalArgumentException("Type DTO must not be null");
         }
 
-        // We trust the C# exporter to provide `type` discriminator ("class"/"interface"/"type").
-        // For structs/enums/records the exporter currently emits "type" -> we dispatch by `kind`.
         String discriminator = safeLower(dto.type);
-        CSharpTypeKind kind = CSharpTypeKind.fromJson(dto.kind);
 
+        // Fast path für polymorphe DTOs (wenn vorhanden)
         if ("class".equals(discriminator)) {
             return mapClass((JsonClassDto) dto);
         }
@@ -116,7 +114,10 @@ public class JsonProjectImporter {
             return mapInterface((JsonInterfaceDto) dto);
         }
 
-        // fallback: dispatch by kind
+        // ✅ kind zuerst, aber falls kind fehlt: discriminator als Fallback
+        String kindValue = (dto.kind != null && !dto.kind.isBlank()) ? dto.kind : dto.type;
+        CSharpTypeKind kind = CSharpTypeKind.fromJson(kindValue);
+
         return switch (kind) {
             case CLASS -> mapClass(cast(dto, JsonClassDto.class, "class"));
             case INTERFACE -> mapInterface(cast(dto, JsonInterfaceDto.class, "interface"));
@@ -125,6 +126,7 @@ public class JsonProjectImporter {
             case RECORD -> mapRecord(cast(dto, JsonRecordDto.class, "record"));
         };
     }
+
 
     private static String safeLower(String s) {
         return s == null ? "" : s.trim().toLowerCase();
