@@ -8,54 +8,34 @@ import java.util.Objects;
 
 public class CSharpClass extends CSharpType {
 
-    private String baseType;
-    private final List<String> implementedInterfaces = new ArrayList<>();
+    private String baseClass; // optional
+    private final List<String> interfaces = new ArrayList<>();
 
     private final List<CSharpMethod> methods = new ArrayList<>();
     private final List<CSharpField> fields = new ArrayList<>();
     private final List<CSharpProperty> properties = new ArrayList<>();
 
-    public CSharpClass(String name, String namespace) {
-        super(name, namespace, CSharpTypeKind.CLASS);
+    public CSharpClass(String name, String namespace, String fullName) {
+        super(name, namespace, fullName, CSharpTypeKind.CLASS);
     }
 
-    public String getBaseType() {
-        return baseType;
-    }
+    public String getBaseClass() { return baseClass; }
 
-    public void setBaseType(String baseType) {
-        this.baseType = baseType;
-    }
+    public void setBaseClass(String baseClass) { this.baseClass = baseClass; }
 
-    public List<String> getImplementedInterfaces() {
-        return implementedInterfaces;
-    }
+    public List<String> getInterfaces() { return interfaces; }
 
-    public void implementInterface(String interfaceName) {
-        implementedInterfaces.add(Objects.requireNonNull(interfaceName));
-    }
+    public void addInterface(String iface) { interfaces.add(Objects.requireNonNull(iface)); }
 
-    public List<CSharpMethod> getMethods() {
-        return methods;
-    }
+    public List<CSharpMethod> getMethods() { return methods; }
 
-    public void addMethod(CSharpMethod method) {
-        methods.add(Objects.requireNonNull(method));
-    }
+    public void addMethod(CSharpMethod m) { methods.add(Objects.requireNonNull(m)); }
 
-    public List<CSharpField> getFields() {
-        return fields;
-    }
+    public List<CSharpField> getFields() { return fields; }
 
-    public void addField(CSharpField field) {
-        fields.add(Objects.requireNonNull(field));
-    }
+    public void addField(CSharpField f) { fields.add(Objects.requireNonNull(f)); }
 
-    public List<CSharpProperty> getProperties() {
-        return properties;
-    }
+    public List<CSharpProperty> getProperties() { return properties; }
 
-    public void addProperty(CSharpProperty property) {
-        properties.add(Objects.requireNonNull(property));
-    }
+    public void addProperty(CSharpProperty p) { properties.add(Objects.requireNonNull(p)); }
 }

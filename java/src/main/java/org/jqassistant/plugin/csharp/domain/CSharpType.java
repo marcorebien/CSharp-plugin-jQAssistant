@@ -1,74 +1,52 @@
 package org.jqassistant.plugin.csharp.domain;
 
-import org.jqassistant.plugin.csharp.domain.enums.CSharpModifier;
 import org.jqassistant.plugin.csharp.domain.enums.CSharpTypeKind;
+import org.jqassistant.plugin.csharp.domain.enums.CSharpTypeModifier;
 import org.jqassistant.plugin.csharp.domain.enums.CSharpVisibility;
 
 import java.util.EnumSet;
 import java.util.Objects;
-import java.util.Set;
 
-/**
- * Abstract base class for all C# types (classes, interfaces, etc.).
- */
 public abstract class CSharpType {
 
     private final String name;
     private final String namespace;
+    private final String fullName;
+
     private final CSharpTypeKind kind;
 
     private CSharpVisibility visibility = CSharpVisibility.INTERNAL;
-    private final Set<CSharpModifier> modifiers = EnumSet.noneOf(CSharpModifier.class);
+    private EnumSet<CSharpTypeModifier> modifiers = EnumSet.noneOf(CSharpTypeModifier.class);
 
-    protected CSharpType(String name, String namespace, CSharpTypeKind kind) {
-        this.name = Objects.requireNonNull(name, "name must not be null");
-        this.namespace = Objects.requireNonNull(namespace, "namespace must not be null");
-        this.kind = Objects.requireNonNull(kind, "kind must not be null");
+    protected CSharpType(String name, String namespace, String fullName, CSharpTypeKind kind) {
+        this.name = Objects.requireNonNull(name);
+        this.namespace = Objects.requireNonNull(namespace);
+        this.fullName = Objects.requireNonNull(fullName);
+        this.kind = Objects.requireNonNull(kind);
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public String getNamespace() {
-        return namespace;
-    }
+    public String getNamespace() { return namespace; }
 
-    public CSharpTypeKind getKind() {
-        return kind;
-    }
+    public String getFullName() { return fullName; }
 
-    public String getFullName() {
-        return namespace.isEmpty() ? name : namespace + "." + name;
-    }
+    public CSharpTypeKind getKind() { return kind; }
 
-    public CSharpVisibility getVisibility() {
-        return visibility;
-    }
+    public CSharpVisibility getVisibility() { return visibility; }
 
     public void setVisibility(CSharpVisibility visibility) {
         this.visibility = Objects.requireNonNull(visibility);
     }
 
-    public Set<CSharpModifier> getModifiers() {
-        return modifiers;
+    public EnumSet<CSharpTypeModifier> getModifiers() { return modifiers; }
+
+    public void setModifiers(EnumSet<CSharpTypeModifier> modifiers) {
+        this.modifiers = Objects.requireNonNull(modifiers);
     }
 
-    public void addModifier(CSharpModifier modifier) {
-        modifiers.add(Objects.requireNonNull(modifier));
-    }
-
-    /* --- Convenience semantics --- */
-
-    public boolean isAbstract() {
-        return modifiers.contains(CSharpModifier.ABSTRACT);
-    }
-
-    public boolean isStatic() {
-        return modifiers.contains(CSharpModifier.STATIC);
-    }
-
-    public boolean isSealed() {
-        return modifiers.contains(CSharpModifier.SEALED);
+    @Override
+    public String toString() {
+        return kind + " " + fullName + " (" + visibility + ", " + modifiers + ")";
     }
 }

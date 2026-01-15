@@ -8,31 +8,25 @@ public class CSharpParameter {
 
     private final String name;
     private final String type;
-    private CSharpParameterModifier modifier;
+
+    private CSharpParameterModifier modifier = CSharpParameterModifier.NONE;
+    private boolean optional;
+    private String defaultValue; // nullable
 
     public CSharpParameter(String name, String type) {
-        this(name, type, CSharpParameterModifier.NONE);
-    }
-
-    public CSharpParameter(String name, String type, CSharpParameterModifier modifier) {
         this.name = Objects.requireNonNull(name);
         this.type = Objects.requireNonNull(type);
-        this.modifier = Objects.requireNonNull(modifier);
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+    public String getType() { return type; }
 
-    public String getType() {
-        return type;
-    }
+    public CSharpParameterModifier getModifier() { return modifier; }
+    public void setModifier(CSharpParameterModifier modifier) { this.modifier = Objects.requireNonNull(modifier); }
 
-    public void setModifier(CSharpParameterModifier modifier) {
-        this.modifier = Objects.requireNonNull(modifier);
-    }
+    public boolean isOptional() { return optional; }
+    public void setOptional(boolean optional) { this.optional = optional; }
 
-    public CSharpParameterModifier getModifier() {
-        return modifier;
-    }
+    public String getDefaultValue() { return defaultValue; }
+    public void setDefaultValue(String defaultValue) { this.defaultValue = defaultValue; }
 }

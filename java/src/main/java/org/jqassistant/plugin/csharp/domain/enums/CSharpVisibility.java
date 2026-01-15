@@ -1,23 +1,24 @@
 package org.jqassistant.plugin.csharp.domain.enums;
 
-import java.util.List;
+import java.util.Locale;
 
-/**
- * Represents the visibility of a C# program element.
- */
 public enum CSharpVisibility {
     PUBLIC,
     PRIVATE,
     PROTECTED,
-    INTERNAL;
+    INTERNAL,
+    PROTECTED_INTERNAL;
 
-    public static CSharpVisibility fromString(String value) {
-        return switch (value) {
+    public static CSharpVisibility fromJson(String value) {
+        if (value == null) return INTERNAL;
+        String v = value.trim().toLowerCase(Locale.ROOT);
+        return switch (v) {
             case "public" -> PUBLIC;
+            case "private" -> PRIVATE;
             case "protected" -> PROTECTED;
             case "internal" -> INTERNAL;
-            case "private" -> PRIVATE;
-            default -> INTERNAL; // C# default
+            case "protectedinternal", "protected_internal", "protected internal" -> PROTECTED_INTERNAL;
+            default -> INTERNAL;
         };
     }
 }

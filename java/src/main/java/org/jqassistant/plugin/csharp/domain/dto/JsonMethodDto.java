@@ -4,9 +4,9 @@ import java.util.List;
 
 public class JsonMethodDto {
     public String name;
+    public String signature;
     public String returnType;
     public String visibility;
-    public List<String> modifiers;
+    public String modifiers; // flags string
     public List<JsonParameterDto> parameters;
 }
-

@@ -1,3 +1,8 @@
 /.idea
 /java/target
 /target
+/csharp/.idea
+/csharp/CSharpAnalyzer.Tests/bin
+/csharp/CSharpAnalyzer.Tests/obj
+/csharp/src/CSharpAnalyzer/bin
+/csharp/src/CSharpAnalyzer/obj

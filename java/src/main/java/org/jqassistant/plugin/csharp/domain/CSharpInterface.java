@@ -8,26 +8,18 @@ import java.util.Objects;
 
 public class CSharpInterface extends CSharpType {
 
-    private final List<String> extendedInterfaces = new ArrayList<>();
+    private final List<String> interfaces = new ArrayList<>();
     private final List<CSharpMethod> methods = new ArrayList<>();
 
-    public CSharpInterface(String name, String namespace) {
-        super(name, namespace, CSharpTypeKind.INTERFACE);
+    public CSharpInterface(String name, String namespace, String fullName) {
+        super(name, namespace, fullName, CSharpTypeKind.INTERFACE);
     }
 
-    public List<String> getExtendedInterfaces() {
-        return extendedInterfaces;
-    }
+    public List<String> getInterfaces() { return interfaces; }
 
-    public void extendInterface(String name) {
-        extendedInterfaces.add(Objects.requireNonNull(name));
-    }
+    public void addInterface(String iface) { interfaces.add(Objects.requireNonNull(iface)); }
 
-    public List<CSharpMethod> getMethods() {
-        return methods;
-    }
+    public List<CSharpMethod> getMethods() { return methods; }
 
-    public void addMethod(CSharpMethod method) {
-        methods.add(Objects.requireNonNull(method));
-    }
+    public void addMethod(CSharpMethod m) { methods.add(Objects.requireNonNull(m)); }
 }
