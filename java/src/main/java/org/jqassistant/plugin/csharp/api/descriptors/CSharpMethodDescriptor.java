@@ -1,6 +1,14 @@
 package org.jqassistant.plugin.csharp.api.descriptors;
 
-public interface CSharpMethodDescriptor {
+import com.buschmais.jqassistant.core.store.api.model.Descriptor;
+import com.buschmais.xo.neo4j.api.annotation.Relation;
+import org.jqassistant.plugin.csharp.domain.enums.CSharpVisibility;
+import com.buschmais.xo.neo4j.api.annotation.Label;
+
+import java.util.List;
+
+@Label("CSharpMethod")
+public interface CSharpMethodDescriptor extends Descriptor {
 
     String getName();
     void setName(String name);
@@ -11,27 +19,28 @@ public interface CSharpMethodDescriptor {
     String getReturnType();
     void setReturnType(String returnType);
 
-    String getVisibility();
-    void setVisibility(String visibility);
+    CSharpVisibility getVisibility();
+    void setVisibility(CSharpVisibility visibility);
 
+    // Flags (passt sauber zum C# Exporter "modifiers":"static|async|virtual|...")
     Boolean isStatic();
-    void setStatic(Boolean value);
+    void setStatic(Boolean v);
 
     Boolean isAbstract();
-    void setAbstract(Boolean value);
+    void setAbstract(Boolean v);
 
     Boolean isVirtual();
-    void setVirtual(Boolean value);
+    void setVirtual(Boolean v);
 
     Boolean isOverride();
-    void setOverride(Boolean value);
+    void setOverride(Boolean v);
 
     Boolean isSealed();
-    void setSealed(Boolean value);
+    void setSealed(Boolean v);
 
     Boolean isAsync();
-    void setAsync(Boolean value);
+    void setAsync(Boolean v);
 
-    String getModifiersRaw();
-    void setModifiersRaw(String raw);
+    @Relation("HAS_PARAMETER")
+    List<CSharpParameterDescriptor> getParameters();
 }

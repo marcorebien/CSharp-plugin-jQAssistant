@@ -1,12 +1,17 @@
 package org.jqassistant.plugin.csharp.api.descriptors;
 
+import com.buschmais.xo.neo4j.api.annotation.Label;
+import com.buschmais.xo.neo4j.api.annotation.Relation;
+
 import java.util.List;
 
+@Label("CSharpClass")
 public interface CSharpClassDescriptor extends CSharpTypeDescriptor {
 
-    String getBaseClass();
-    void setBaseClass(String baseClass);
+    @Relation("EXTENDS")
+    CSharpTypeDescriptor getBaseType();
+    void setBaseType(CSharpTypeDescriptor baseType);
 
-    List<String> getInterfaces();
-    void setInterfaces(List<String> interfaces);
+    @Relation("IMPLEMENTS")
+    List<CSharpInterfaceDescriptor> getImplementedInterfaces();
 }
