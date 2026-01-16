@@ -14,7 +14,6 @@ public interface CSharpFieldDescriptor {
     Boolean isStatic();
     void setStatic(Boolean value);
 
-    // Optional: readonly wäre eher FieldModifier
-    Boolean isReadOnly();
-    void setReadOnly(Boolean value);
+    String getModifiersRaw();
+    void setModifiersRaw(String raw);
 }

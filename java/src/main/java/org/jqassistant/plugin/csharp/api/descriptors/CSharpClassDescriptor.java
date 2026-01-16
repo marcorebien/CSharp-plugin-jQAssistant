@@ -1,7 +1,12 @@
 package org.jqassistant.plugin.csharp.api.descriptors;
 
+import java.util.List;
+
 public interface CSharpClassDescriptor extends CSharpTypeDescriptor {
 
-    String getBaseType();          // baseClass
-    void setBaseType(String baseType);
+    String getBaseClass();
+    void setBaseClass(String baseClass);
+
+    List<String> getInterfaces();
+    void setInterfaces(List<String> interfaces);
 }

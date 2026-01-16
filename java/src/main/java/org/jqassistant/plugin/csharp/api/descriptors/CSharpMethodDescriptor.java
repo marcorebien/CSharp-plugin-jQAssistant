@@ -14,7 +14,6 @@ public interface CSharpMethodDescriptor {
     String getVisibility();
     void setVisibility(String visibility);
 
-    // MethodModifiers (Flags) – Booleans
     Boolean isStatic();
     void setStatic(Boolean value);
 
@@ -33,7 +32,6 @@ public interface CSharpMethodDescriptor {
     Boolean isAsync();
     void setAsync(Boolean value);
 
-    // Optional: raw
     String getModifiersRaw();
     void setModifiersRaw(String raw);
 }

@@ -8,15 +8,12 @@ public interface CSharpParameterDescriptor {
     String getType();
     void setType(String type);
 
-    Integer getPosition();
-    void setPosition(Integer position);
-
-    String getModifier(); // "none/ref/out/in/params"
+    String getModifier();      // "none|ref|out|in|params"
     void setModifier(String modifier);
 
     Boolean isOptional();
-    void setOptional(Boolean optional);
+    void setOptional(Boolean value);
 
-    String getDefaultValue(); // nullable
-    void setDefaultValue(String defaultValue);
+    String getDefaultValue();
+    void setDefaultValue(String value);
 }
