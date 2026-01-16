@@ -1,4 +1,4 @@
-package org.jqassistant.plugin.csharp;
+package org.jqassistant.plugin.csharp.smoke;
 
 import org.jqassistant.plugin.csharp.impl.scanner.roslyn.RoslynInvoker;
 
