@@ -1,27 +1,28 @@
 package org.jqassistant.plugin.csharp.api.descriptors;
 
-import com.buschmais.xo.neo4j.api.annotation.Label;
-import com.buschmais.xo.neo4j.api.annotation.Property;
+import org.jqassistant.plugin.csharp.api.model.CSharpTypeKind;
+import org.jqassistant.plugin.csharp.api.model.CSharpTypeModifier;
+import org.jqassistant.plugin.csharp.api.model.CSharpVisibility;
 
-/**
- * Base descriptor for all C# types (classes, interfaces).
- */
-@Label("CSharpType")
+import java.util.Set;
+
 public interface CSharpTypeDescriptor {
 
-    @Property("name")
     String getName();
     void setName(String name);
 
-    @Property("fullName")
-    String getFullName();
-    void setFullName(String fullName);
-
-    @Property("namespace")
     String getNamespace();
     void setNamespace(String namespace);
 
-    @Property("visibility")
-    String getVisibility();
-    void setVisibility(String visibility);
+    String getFullName();
+    void setFullName(String fullName);
+
+    CSharpVisibility getVisibility();
+    void setVisibility(CSharpVisibility visibility);
+
+    CSharpTypeKind getKind();
+    void setKind(CSharpTypeKind kind);
+
+    Set<CSharpTypeModifier> getModifiers();
+    void setModifiers(Set<CSharpTypeModifier> modifiers);
 }

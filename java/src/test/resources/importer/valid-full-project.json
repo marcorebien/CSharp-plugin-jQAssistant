@@ -1,0 +1,162 @@
+{
+  "namespaces": [
+    {
+      "name": "SampleApp",
+      "types": [
+        {
+          "type": "class",
+          "name": "Program",
+          "namespace": "SampleApp",
+          "fullName": "SampleApp.Program",
+          "visibility": "internal",
+          "modifiers": ["static", "sealed"],
+          "interfaces": ["System.IDisposable"],
+          "baseClass": null,
+
+          "fields": [
+            { "name": "_count", "type": "int", "visibility": "private", "isStatic": false },
+            { "name": "Global", "type": "string", "visibility": "public", "isStatic": true }
+          ],
+
+          "properties": [
+            { "name": "Name", "type": "string", "hasGetter": true, "hasSetter": false },
+            { "name": "Age",  "type": "int",    "hasGetter": true, "hasSetter": true }
+          ],
+
+          "methods": [
+            {
+              "name": "Main",
+              "signature": "Main(string[] args): void",
+              "returnType": "void",
+              "visibility": "private",
+              "modifiers": "static",
+              "parameters": [
+                { "name": "args", "type": "string[]", "modifier": "none", "optional": false }
+              ]
+            },
+            {
+              "name": "Compute",
+              "signature": "Compute(ref int x, int y = 42): int",
+              "returnType": "int",
+              "visibility": "public",
+              "modifiers": "virtual, async",
+              "parameters": [
+                { "name": "x", "type": "int", "modifier": "ref", "optional": false },
+                { "name": "y", "type": "int", "modifier": "none", "optional": true, "defaultValue": "42" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "SampleApp.Models",
+      "types": [
+        {
+          "type": "interface",
+          "name": "IService",
+          "namespace": "SampleApp.Models",
+          "fullName": "SampleApp.Models.IService",
+          "visibility": "public",
+          "modifiers": [],
+          "interfaces": ["System.IAsyncDisposable"],
+          "methods": [
+            {
+              "name": "Run",
+              "signature": "Run(): void",
+              "returnType": "void",
+              "visibility": "public",
+              "modifiers": "none",
+              "parameters": []
+            }
+          ]
+        },
+
+        {
+          "type": "struct",
+          "name": "Point",
+          "namespace": "SampleApp.Models",
+          "fullName": "SampleApp.Models.Point",
+          "visibility": "public",
+          "modifiers": [],
+          "fields": [
+            { "name": "X", "type": "double", "visibility": "public", "isStatic": false },
+            { "name": "Y", "type": "double", "visibility": "public", "isStatic": false }
+          ],
+          "properties": [],
+          "methods": []
+        },
+
+        {
+          "type": "enum",
+          "name": "Status",
+          "namespace": "SampleApp.Models",
+          "fullName": "SampleApp.Models.Status",
+          "visibility": "public",
+          "modifiers": [],
+          "members": ["Active", "Inactive", "Deleted"]
+        },
+
+        {
+          "type": "record",
+          "name": "User",
+          "namespace": "SampleApp.Models",
+          "fullName": "SampleApp.Models.User",
+          "visibility": "public",
+          "modifiers": [],
+          "interfaces": ["System.IEquatable<SampleApp.Models.User>"],
+          "baseClass": null,
+          "fields": [],
+          "methods": [],
+          "properties": [
+            { "name": "Id", "type": "int", "hasGetter": true, "hasSetter": false }
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "SampleApp.Services",
+      "types": [
+        {
+          "type": "interface",
+          "name": "IUserService",
+          "namespace": "SampleApp.Services",
+          "fullName": "SampleApp.Services.IUserService",
+          "visibility": "public",
+          "modifiers": [],
+          "interfaces": ["System.IDisposable"],
+          "methods": [
+            {
+              "name": "Execute",
+              "signature": "Execute(ref int id, out string result, string? prefix = null): void",
+              "returnType": "void",
+              "visibility": "public",
+              "modifiers": "none",
+              "parameters": [
+                { "name": "id", "type": "int", "modifier": "ref", "optional": false },
+                { "name": "result", "type": "string", "modifier": "out", "optional": false },
+                { "name": "prefix", "type": "string?", "modifier": "none", "optional": true, "defaultValue": "null" }
+              ]
+            }
+          ]
+        },
+
+        {
+          "type": "class",
+          "name": "UserService",
+          "namespace": "SampleApp.Services",
+          "fullName": "SampleApp.Services.UserService",
+          "visibility": "public",
+          "modifiers": ["sealed"],
+          "interfaces": ["SampleApp.Services.IUserService"],
+          "baseClass": "SampleApp.Services.BaseService",
+          "fields": [],
+          "properties": [],
+          "methods": []
+        }
+      ]
+    }
+  ]
+}
