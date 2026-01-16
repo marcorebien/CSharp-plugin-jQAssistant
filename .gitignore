@@ -1,4 +1,5 @@
 /.idea
+/target
 /java/target
 /target
 /csharp/.idea
