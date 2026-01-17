@@ -65,6 +65,17 @@ class CSharpEndToEndSmokeTest {
             when(d.getMethods()).thenReturn(new ArrayList<>());
             when(d.getFields()).thenReturn(new ArrayList<>());
             when(d.getProperties()).thenReturn(new ArrayList<>());
+            when(d.getExtendedInterfaces()).thenReturn(new ArrayList<>());
+            return d;
+        });
+
+
+        // Type: Struct
+        when(store.create(CSharpStructDescriptor.class)).thenAnswer(inv -> {
+            CSharpStructDescriptor d = mock(CSharpStructDescriptor.class);
+            when(d.getMethods()).thenReturn(new ArrayList<>());
+            when(d.getFields()).thenReturn(new ArrayList<>());
+            when(d.getProperties()).thenReturn(new ArrayList<>());
             return d;
         });
 

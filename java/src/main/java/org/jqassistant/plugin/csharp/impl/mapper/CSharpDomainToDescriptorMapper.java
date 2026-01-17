@@ -55,19 +55,19 @@ public class CSharpDomainToDescriptorMapper {
     }
 
     // ---------------------------
-    // Type Nodes (mit Kanten)
+    // Type Nodes
     // ---------------------------
 
     private CSharpClassDescriptor mapClass(CSharpClass cls, ScannerContext ctx) {
         CSharpClassDescriptor d = ctx.getStore().create(CSharpClassDescriptor.class);
         mapCommonTypeFields(cls, d);
 
-        // EXTENDS (BaseType)
+        // EXTENDS
         if (cls.getBaseClass() != null && !cls.getBaseClass().isBlank()) {
             d.setBaseType(getOrCreateTypeRef(cls.getBaseClass(), ctx));
         }
 
-        // IMPLEMENTS (Interfaces)
+        // IMPLEMENTS
         for (String ifaceName : cls.getInterfaces()) {
             if (ifaceName == null || ifaceName.isBlank()) continue;
             d.getImplementedInterfaces().add(getOrCreateInterfaceRef(ifaceName, ctx));
@@ -85,17 +85,18 @@ public class CSharpDomainToDescriptorMapper {
         CSharpInterfaceDescriptor d = ctx.getStore().create(CSharpInterfaceDescriptor.class);
         mapCommonTypeFields(itf, d);
 
-        // Interface EXTENDS Interface
-        for (String ifaceName : itf.getInterfaces()) {
-            if (ifaceName == null || ifaceName.isBlank()) continue;
-            d.getExtendedInterfaces().add(getOrCreateInterfaceRef(ifaceName, ctx)); // EXTENDS
+        // EXTENDS (Interface -> Interface)
+        for (String ext : itf.getInterfaces()) {
+            if (ext == null || ext.isBlank()) continue;
+            d.getExtendedInterfaces().add(getOrCreateInterfaceRef(ext, ctx));
         }
 
+        // Members
         for (CSharpMethod m : itf.getMethods()) d.getMethods().add(mapMethod(m, ctx));
         return d;
     }
 
-    private CSharpTypeDescriptor mapStruct(CSharpStruct st, ScannerContext ctx) {
+    private CSharpStructDescriptor mapStruct(CSharpStruct st, ScannerContext ctx) {
         CSharpStructDescriptor d = ctx.getStore().create(CSharpStructDescriptor.class);
         mapCommonTypeFields(st, d);
 
@@ -110,7 +111,7 @@ public class CSharpDomainToDescriptorMapper {
         CSharpEnumDescriptor d = ctx.getStore().create(CSharpEnumDescriptor.class);
         mapCommonTypeFields(en, d);
 
-        d.setMembers(en.getMembers()); // Property reicht hier
+        d.setMembers(en.getMembers());
         return d;
     }
 
@@ -137,7 +138,7 @@ public class CSharpDomainToDescriptorMapper {
     }
 
     // ---------------------------
-    // Member Nodes (Method/Field/Property/Parameter)
+    // Member Nodes
     // ---------------------------
 
     private CSharpMethodDescriptor mapMethod(CSharpMethod m, ScannerContext ctx) {
@@ -148,7 +149,6 @@ public class CSharpDomainToDescriptorMapper {
         d.setReturnType(m.getReturnType());
         d.setVisibility(m.getVisibility());
 
-        // Flags aus EnumSet
         d.setStatic(m.getModifiers().contains(org.jqassistant.plugin.csharp.domain.enums.CSharpMethodModifier.STATIC));
         d.setAbstract(m.getModifiers().contains(org.jqassistant.plugin.csharp.domain.enums.CSharpMethodModifier.ABSTRACT));
         d.setVirtual(m.getModifiers().contains(org.jqassistant.plugin.csharp.domain.enums.CSharpMethodModifier.VIRTUAL));
@@ -157,7 +157,7 @@ public class CSharpDomainToDescriptorMapper {
         d.setAsync(m.getModifiers().contains(org.jqassistant.plugin.csharp.domain.enums.CSharpMethodModifier.ASYNC));
 
         for (CSharpParameter p : m.getParameters()) {
-            d.getParameters().add(mapParameter(p, ctx)); // HAS_PARAMETER
+            d.getParameters().add(mapParameter(p, ctx));
         }
         return d;
     }
@@ -191,7 +191,7 @@ public class CSharpDomainToDescriptorMapper {
     }
 
     // ---------------------------
-    // Helpers: Common fields + Referenzen
+    // Common + TypeRefs
     // ---------------------------
 
     private void mapCommonTypeFields(CSharpType src, CSharpTypeDescriptor dst) {
@@ -201,16 +201,21 @@ public class CSharpDomainToDescriptorMapper {
         dst.setKind(src.getKind());
         dst.setVisibility(src.getVisibility());
 
-        // EnumSet<CSharpTypeModifier> -> "ABSTRACT,SEALED,STATIC"
-        String mods = src.getModifiers().stream()
-                .map(Enum::name)
-                .sorted()
-                .reduce((a, b) -> a + "," + b)
-                .orElse("");
-        dst.setTypeModifiers(mods);
+        dst.setTypeModifiers(
+                src.getModifiers().stream()
+                        .map(Enum::name)
+                        .sorted()
+                        .reduce((a, b) -> a + "," + b)
+                        .orElse("")
+        );
     }
 
+
     private CSharpTypeDescriptor getOrCreateTypeRef(String fullName, ScannerContext ctx) {
+        if (fullName == null || fullName.isBlank()) {
+            throw new IllegalArgumentException("fullName must not be blank");
+        }
+
         CSharpTypeDescriptor existing = typeByFullName.get(fullName);
         if (existing != null) return existing;
 
@@ -218,23 +223,29 @@ public class CSharpDomainToDescriptorMapper {
         String ns = (lastDot > 0) ? fullName.substring(0, lastDot) : "";
         String name = (lastDot > 0) ? fullName.substring(lastDot + 1) : fullName;
 
-        CSharpTypeDescriptor ref = ctx.getStore().create(CSharpTypeDescriptor.class);
+        // Default reference node: Class (concrete label)
+        CSharpClassDescriptor ref = ctx.getStore().create(CSharpClassDescriptor.class);
         ref.setFullName(fullName);
         ref.setNamespace(ns);
         ref.setName(name);
-
-        // Default-Referenz
         ref.setKind(org.jqassistant.plugin.csharp.domain.enums.CSharpTypeKind.CLASS);
         ref.setVisibility(org.jqassistant.plugin.csharp.domain.enums.CSharpVisibility.INTERNAL);
+        ref.setTypeModifiers("");
 
         typeByFullName.put(fullName, ref);
         return ref;
     }
 
     private CSharpInterfaceDescriptor getOrCreateInterfaceRef(String fullName, ScannerContext ctx) {
+        if (fullName == null || fullName.isBlank()) {
+            throw new IllegalArgumentException("fullName must not be blank");
+        }
+
         CSharpTypeDescriptor cached = typeByFullName.get(fullName);
         if (cached != null) {
-            if (cached instanceof CSharpInterfaceDescriptor i) return i;
+            if (cached instanceof CSharpInterfaceDescriptor) {
+                return (CSharpInterfaceDescriptor) cached;
+            }
             throw new IllegalStateException("Expected interface for '" + fullName + "' but found " + cached.getClass().getSimpleName());
         }
 
@@ -248,6 +259,7 @@ public class CSharpDomainToDescriptorMapper {
         iface.setName(name);
         iface.setKind(org.jqassistant.plugin.csharp.domain.enums.CSharpTypeKind.INTERFACE);
         iface.setVisibility(org.jqassistant.plugin.csharp.domain.enums.CSharpVisibility.INTERNAL);
+        iface.setTypeModifiers("");
 
         typeByFullName.put(fullName, iface);
         return iface;
