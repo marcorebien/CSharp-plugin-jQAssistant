@@ -29,6 +29,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.buschmais.xo</groupId>
+            <artifactId>xo.api</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.buschmais.jqassistant.plugin</groupId>
             <artifactId>common</artifactId>
             <scope>provided</scope>
@@ -58,6 +64,14 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.3.1</version>
+            <scope>test</scope>
+        </dependency>
+
+
         <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
@@ -74,7 +88,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <release>14</release>
+                    <release>16</release>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
 
@@ -84,7 +100,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.11.2</version>
                 <configuration>
-                    <release>14</release>
+                    <release>16</release>
                 </configuration>
             </plugin>
 

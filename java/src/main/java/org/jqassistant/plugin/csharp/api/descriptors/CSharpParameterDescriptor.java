@@ -1,6 +1,11 @@
 package org.jqassistant.plugin.csharp.api.descriptors;
 
-public interface CSharpParameterDescriptor {
+import com.buschmais.jqassistant.core.store.api.model.Descriptor;
+import org.jqassistant.plugin.csharp.domain.enums.CSharpParameterModifier;
+import com.buschmais.xo.neo4j.api.annotation.Label;
+
+@Label("CSharpParameter")
+public interface CSharpParameterDescriptor extends Descriptor {
 
     String getName();
     void setName(String name);
@@ -8,11 +13,11 @@ public interface CSharpParameterDescriptor {
     String getType();
     void setType(String type);
 
-    String getModifier();      // "none|ref|out|in|params"
-    void setModifier(String modifier);
+    CSharpParameterModifier getModifier();
+    void setModifier(CSharpParameterModifier modifier);
 
     Boolean isOptional();
-    void setOptional(Boolean value);
+    void setOptional(Boolean optional);
 
     String getDefaultValue();
     void setDefaultValue(String value);
