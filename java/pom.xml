@@ -107,8 +107,14 @@
                 <configuration>
                     <release>16</release>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jqassistant.plugin.csharp</groupId>
+                        <artifactId>csharp-plugin</artifactId>
+                        <version>1.0.0-SNAPSHOT</version>
+                    </dependency>
+                </dependencies>
             </plugin>
-
         </plugins>
     </build>
 

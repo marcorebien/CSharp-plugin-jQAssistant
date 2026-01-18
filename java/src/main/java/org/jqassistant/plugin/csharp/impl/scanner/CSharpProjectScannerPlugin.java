@@ -57,20 +57,20 @@ public class CSharpProjectScannerPlugin extends AbstractScannerPlugin<FileResour
     @Override
     public boolean accepts(FileResource item, String path, Scope scope) {
         // We only run in our dedicated scope
-        if (!(scope instanceof CSharpScope) || scope != CSharpScope.PROJECT) {
-            return false;
-        }
-
-        // If user explicitly provides target via system property -> accept on any scanned file
-        // (as long as something triggers scanning in this scope).
-        if (isConfiguredTargetViaProperty()) {
-            return true;
-        }
-
-        // Fallback: accept only if the scanned file itself is .sln/.csproj
+//        if (!(scope instanceof CSharpScope) || scope != CSharpScope.PROJECT) {
+//            return false;
+//        }
         if (path == null) return false;
         String p = path.toLowerCase(Locale.ROOT);
         return p.endsWith(".sln") || p.endsWith(".csproj");
+
+
+        // If user explicitly provides target via system property -> accept on any scanned file
+        // (as long as something triggers scanning in this scope).
+//        if (isConfiguredTargetViaProperty()) {
+//            return true;
+//        }
+
     }
 
     @Override
