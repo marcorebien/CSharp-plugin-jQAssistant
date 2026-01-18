@@ -1,6 +1,7 @@
 package org.jqassistant.plugin.csharp.impl.scanner.roslyn;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -18,7 +19,6 @@ public class RoslynInvoker {
 
     public String runAnalyzer(Path solutionOrProjectToAnalyze) {
         try {
-            // 1) Vorab prüfen, damit du sofort siehst ob Pfade stimmen
             if (analyzerCsproj == null || !Files.exists(analyzerCsproj)) {
                 throw new IllegalStateException("Analyzer csproj not found: " + analyzerCsproj);
             }
@@ -26,26 +26,8 @@ public class RoslynInvoker {
                 throw new IllegalStateException("Target project not found: " + solutionOrProjectToAnalyze);
             }
 
-            // 2) dotnet run --project <analyzer> -- <target>
-            List<String> cmd = new ArrayList<>();
-            cmd.add("dotnet");
-            cmd.add("run");
-            cmd.add("--project");
-            cmd.add(analyzerCsproj.toAbsolutePath().toString());
-            cmd.add("--configuration");
-            cmd.add("Release");
-            cmd.add("--");
-            cmd.add(solutionOrProjectToAnalyze.toAbsolutePath().toString());
-
-            ProcessBuilder pb = new ProcessBuilder(cmd);
-
-            // super wichtig: Working dir auf Analyzer-Ordner setzen
-            pb.directory(analyzerCsproj.getParent().toFile());
-
-            // stderr mit stdout mergen, damit du alles siehst
-            pb.redirectErrorStream(true);
-
-            Process p = pb.start();
+            // dotnet run --project <analyzer> -- <target>
+            Process p = getProcess(solutionOrProjectToAnalyze);
 
             StringBuilder out = new StringBuilder();
             try (BufferedReader r = new BufferedReader(
@@ -68,5 +50,25 @@ public class RoslynInvoker {
         } catch (Exception e) {
             throw new IllegalStateException("Failed to invoke C# analyzer", e);
         }
+    }
+
+    private Process getProcess(Path solutionOrProjectToAnalyze) throws IOException {
+        List<String> cmd = new ArrayList<>();
+        cmd.add("dotnet");
+        cmd.add("run");
+        cmd.add("--project");
+        cmd.add(analyzerCsproj.toAbsolutePath().toString());
+        cmd.add("--configuration");
+        cmd.add("Release");
+        cmd.add("--");
+        cmd.add(solutionOrProjectToAnalyze.toAbsolutePath().toString());
+
+        ProcessBuilder pb = new ProcessBuilder(cmd);
+
+        pb.directory(analyzerCsproj.getParent().toFile());
+
+        pb.redirectErrorStream(true);
+
+        return pb.start();
     }
 }

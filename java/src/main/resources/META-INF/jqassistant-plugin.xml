@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jqassistant-plugin
-        xmlns="http://schema.jqassistant.org/plugin/v2.7"
+        xmlns="http://schema.jqassistant.org/plugin/v2.4"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://schema.jqassistant.org/plugin/v2.7
-                            https://schema.jqassistant.org/plugin/jqassistant-plugin-v2.7.xsd"
+        xsi:schemaLocation="http://schema.jqassistant.org/plugin/v2.4
+                            https://schema.jqassistant.org/plugin/jqassistant-plugin-v2.4.xsd"
         id="jqassistant.plugin.csharp"
         name="jQAssistant CSharp Plugin"
         version="${project.version}">
@@ -16,20 +16,19 @@
     <!-- Domain Model Definitions (Descriptors / Labels) -->
     <model>
         <!-- Project -->
-        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpProjectDescriptor"/>
-        <!-- Namespace -->
-        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpNamespaceDescriptor"/>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpClassDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpEnumDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpFieldDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpInterfaceDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpMethodDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpNamespaceDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpParameterDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpProjectDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpPropertyDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpRecordDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpStructDescriptor</class>
+        <class>org.jqassistant.plugin.csharp.api.descriptors.CSharpTypeDescriptor</class>
 
-        <!-- Types -->
-        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpTypeDescriptor"/>
-        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpClassDescriptor"/>
-        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpInterfaceDescriptor"/>
-
-        <!-- Members -->
-        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpMethodDescriptor"/>
-        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpPropertyDescriptor"/>
-        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpFieldDescriptor"/>
-        <descriptor class="org.jqassistant.plugin.csharp.api.descriptors.CSharpParameterDescriptor"/>
     </model>
 
     <!-- Optional: A custom scope, if the plugin defines one -->
@@ -39,8 +38,7 @@
 
     <!-- Scanner Plugin Implementation -->
     <scanner>
-        <class>org.jqassistant.plugin.csharp.impl.plugin.CSharpPlugin</class>
-        <class>org.jqassistant.plugin.csharp.impl.plugin.CSharpScanner</class>
+        <class>org.jqassistant.plugin.csharp.impl.scanner.CSharpProjectScannerPlugin</class>
     </scanner>
 
 </jqassistant-plugin>
