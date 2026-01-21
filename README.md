@@ -22,10 +22,33 @@ C# side (Analyzer)
 The C# analyzer project is present in this repository (e.g. csharp/src/CSharpAnalyzer/CSharpAnalyzer.csproj)
 
 clone the Repo install with 
+Win:
+$repo = Join-Path $env:USERPROFILE ".jqassistant\repository" mvn -f <Path-to-java/pom> clean install "-Dmaven.repo.local=$repo" 
+Mac
+repo="$HOME/.jqassistant/repository"
+mvn -f <Path-to-pom> clean install -Dmaven.repo.local="$repo"
 
-$repo = Join-Path $env:USERPROFILE ".jqassistant\repository" mvn -f <Path-to-repo> clean install "-Dmaven.repo.local=$repo" 
 Download jQAssistant cli distribution 
 https://production.portal.central.sonatype.com/artifact/com.buschmais.jqassistant.cli/jqassistant-commandline-neo4jv5/2.6.0/versions 
+
+install jqassistant
+
+create .jqassistant.yml in .jqassistant
+jqassistant:
+plugins:
+- group-id: org.jqassistant.plugin.csharp
+artifact-id: csharp-plugin
+version: 1.0.0-SNAPSHOT
+
+store:
+reset: true
+
+scan:
+scopes:
+- name: csharp:project
+
+
+
 
 start scan with .\bin\jqassistant scan -f <path to C# project .csproj or .sln> 
 start server with .\bin\jqassistant server
