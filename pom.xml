@@ -1,16 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.jqassistant.plugin</groupId>
+        <artifactId>parent</artifactId>
+        <version>2.6.0</version>
+        <relativePath/>
+    </parent>
+
     <groupId>org.jqassistant.plugin.csharp</groupId>
     <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>jQAssistant CSharp Plugin</name>
-    <url>https://github.com/marcorebien/CSharp-plugin-jQAssistant</url>
+    <name>jQAssistant CSharp Plugin (Parent)</name>
+    <url>https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</url>
+
+    <modules>
+        <module>java</module>
+    </modules>
+
+    <properties>
+        <!-- Parent selbst soll niemals scannen -->
+        <jqassistant.skip>true</jqassistant.skip>
+
+        <!-- Store IMMER im Root target (nicht im Modul-target) -->
+        <jqassistant.store.directory>
+            ${maven.multiModuleProjectDirectory}/target/jqassistant/store
+        </jqassistant.store.directory>
+    </properties>
 
     <developers>
         <developer>
@@ -23,11 +45,7 @@
     <scm>
         <connection>scm:git:https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</connection>
         <developerConnection>scm:git:https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</developerConnection>
-        <url>https://github.com/marcorebien/CSharp-plugin-jQAssistant</url>
+        <url>https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</url>
     </scm>
-
-    <modules>
-        <module>java</module>
-    </modules>
 
 </project>

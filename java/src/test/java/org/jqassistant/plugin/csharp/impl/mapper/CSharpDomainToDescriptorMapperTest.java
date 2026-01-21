@@ -75,8 +75,8 @@ class CSharpDomainToDescriptorMapperTest {
 
         assertEquals(1, t0.getProperties().size());
         assertEquals("Name", t0.getProperties().get(0).getName());
-        assertTrue(t0.getProperties().get(0).hasGetter());
-        assertFalse(t0.getProperties().get(0).hasSetter());
+        assertTrue(t0.getProperties().get(0).getHasGetter());
+        assertFalse(t0.getProperties().get(0).getHasSetter());
 
         assertEquals(1, t0.getMethods().size());
         assertEquals("Main", t0.getMethods().get(0).getName());

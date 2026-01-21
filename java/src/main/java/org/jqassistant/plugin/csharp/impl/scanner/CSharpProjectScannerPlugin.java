@@ -10,7 +10,8 @@ import org.jqassistant.plugin.csharp.api.descriptors.CSharpProjectDescriptor;
 import org.jqassistant.plugin.csharp.domain.CSharpProject;
 import org.jqassistant.plugin.csharp.domain.JsonProjectImporter;
 import org.jqassistant.plugin.csharp.impl.mapper.CSharpDomainToDescriptorMapper;
-import org.jqassistant.plugin.csharp.impl.scanner.roslyn.RoslynInvoker;
+import org.jqassistant.plugin.csharp.impl.scanner.roslyn.DefaultRoslynAnalyzerRunner;
+import org.jqassistant.plugin.csharp.impl.scanner.roslyn.RoslynAnalyzerRunner;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,118 +25,54 @@ import static com.buschmais.jqassistant.core.scanner.api.ScannerPlugin.Requires;
 @Requires(FileDescriptor.class)
 public class CSharpProjectScannerPlugin extends AbstractScannerPlugin<FileResource, CSharpProjectDescriptor> {
 
-    /**
-     * Path to the C# analyzer csproj (the Roslyn CLI tool).
-     * Example:
-     * -Djqassistant.csharp.analyzer.csproj=D:\GitHub\...\csharp\src\CSharpAnalyzer\CSharpAnalyzer.csproj
-     */
     public static final String PROP_ANALYZER_CSPROJ = "jqassistant.csharp.analyzer.csproj";
-
-    /**
-     * Friendly CLI entry points (Variante B):
-     * -Dcsharp.project=...\MyApp.csproj
-     * -Dcsharp.solution=...\MySolution.sln
-     *
-     * If these are set, the scanner uses them as target and does NOT depend on the scanned file path.
-     */
-    public static final String PROP_CSHARP_PROJECT  = "csharp.project";
-    public static final String PROP_CSHARP_SOLUTION = "csharp.solution";
 
     private final JsonProjectImporter importer;
     private final CSharpDomainToDescriptorMapper mapper;
+    private final RoslynAnalyzerRunner runner;
 
     public CSharpProjectScannerPlugin() {
-        this(new JsonProjectImporter(), new CSharpDomainToDescriptorMapper());
+        this(new JsonProjectImporter(), new CSharpDomainToDescriptorMapper(), new DefaultRoslynAnalyzerRunner());
     }
 
     // visible for tests
-    CSharpProjectScannerPlugin(JsonProjectImporter importer, CSharpDomainToDescriptorMapper mapper) {
-        this.importer = Objects.requireNonNull(importer, "importer");
-        this.mapper = Objects.requireNonNull(mapper, "mapper");
+    public CSharpProjectScannerPlugin(JsonProjectImporter importer,
+                                      CSharpDomainToDescriptorMapper mapper,
+                                      RoslynAnalyzerRunner runner) {
+        this.importer = Objects.requireNonNull(importer);
+        this.mapper = Objects.requireNonNull(mapper);
+        this.runner = Objects.requireNonNull(runner);
     }
 
     @Override
     public boolean accepts(FileResource item, String path, Scope scope) {
-        // We only run in our dedicated scope
-//        if (!(scope instanceof CSharpScope) || scope != CSharpScope.PROJECT) {
-//            return false;
-//        }
+        if (!(scope instanceof CSharpScope)) return false;
+        if (scope != CSharpScope.PROJECT) return false;
         if (path == null) return false;
         String p = path.toLowerCase(Locale.ROOT);
         return p.endsWith(".sln") || p.endsWith(".csproj");
-
-
-        // If user explicitly provides target via system property -> accept on any scanned file
-        // (as long as something triggers scanning in this scope).
-//        if (isConfiguredTargetViaProperty()) {
-//            return true;
-//        }
-
     }
 
     @Override
-    public CSharpProjectDescriptor scan(FileResource item, String ignored, Scope scope, Scanner scanner) throws IOException {
-        Objects.requireNonNull(item, "item");
+    public CSharpProjectDescriptor scan(FileResource item, String x, Scope scope, Scanner scanner) throws IOException {
         Objects.requireNonNull(scanner, "scanner");
+        Path target = item.getFile().toPath();
 
-        // 0) Determine target (.csproj/.sln)
-        Path target = resolveTarget(item);
+        String analyzerCsproj = System.getProperty(PROP_ANALYZER_CSPROJ);
+        if (analyzerCsproj == null || analyzerCsproj.isBlank()) {
+            throw new IllegalStateException("Missing system property: -D" + PROP_ANALYZER_CSPROJ + "=<path-to-CSharpAnalyzer.csproj>");
+        }
 
-        // 1) Analyzer csproj
-        Path analyzerCsproj = resolveAnalyzerCsproj();
+        // ✅ HIER: runner statt RoslynInvoker direkt
+        String json = runner.run(Path.of(analyzerCsproj), target);
 
-        // 2) Run C# analyzer -> JSON
-        RoslynInvoker invoker = createInvoker(analyzerCsproj);
-        String json = invoker.runAnalyzer(target);
-
-        // 3) JSON -> Domain
         CSharpProject project;
         try (var in = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))) {
             project = importer.importProject(in);
         }
 
-        // 4) Domain -> Descriptor graph
         CSharpProjectDescriptor projectDesc = mapper.mapProject(project, scanner.getContext());
         projectDesc.setName(target.getFileName().toString());
-
         return projectDesc;
-    }
-
-    /**
-     * Hook for integration tests (so we can stub RoslynInvoker without running dotnet).
-     */
-    protected RoslynInvoker createInvoker(Path analyzerCsproj) {
-        return new RoslynInvoker(analyzerCsproj);
-    }
-
-    private static boolean isConfiguredTargetViaProperty() {
-        String proj = System.getProperty(PROP_CSHARP_PROJECT);
-        String sln  = System.getProperty(PROP_CSHARP_SOLUTION);
-        return (proj != null && !proj.isBlank()) || (sln != null && !sln.isBlank());
-    }
-
-    private static Path resolveTarget(FileResource item) throws IOException {
-        String proj = System.getProperty(PROP_CSHARP_PROJECT);
-        String sln  = System.getProperty(PROP_CSHARP_SOLUTION);
-
-        if (proj != null && !proj.isBlank()) {
-            return Path.of(proj);
-        }
-        if (sln != null && !sln.isBlank()) {
-            return Path.of(sln);
-        }
-
-        // Fallback: use the scanned file
-        return item.getFile().toPath();
-    }
-
-    private static Path resolveAnalyzerCsproj() {
-        String analyzerCsproj = System.getProperty(PROP_ANALYZER_CSPROJ);
-        if (analyzerCsproj == null || analyzerCsproj.isBlank()) {
-            throw new IllegalStateException(
-                    "Missing system property: -D" + PROP_ANALYZER_CSPROJ + "=<path-to-CSharpAnalyzer.csproj>"
-            );
-        }
-        return Path.of(analyzerCsproj);
     }
 }

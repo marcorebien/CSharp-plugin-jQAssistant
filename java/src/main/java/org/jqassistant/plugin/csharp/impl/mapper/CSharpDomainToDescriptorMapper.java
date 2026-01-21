@@ -67,7 +67,6 @@ public class CSharpDomainToDescriptorMapper {
             d.setBaseType(getOrCreateTypeRef(cls.getBaseClass(), ctx));
         }
 
-        // IMPLEMENTS
         for (String ifaceName : cls.getInterfaces()) {
             if (ifaceName == null || ifaceName.isBlank()) continue;
             d.getImplementedInterfaces().add(getOrCreateInterfaceRef(ifaceName, ctx));
@@ -111,9 +110,20 @@ public class CSharpDomainToDescriptorMapper {
         CSharpEnumDescriptor d = ctx.getStore().create(CSharpEnumDescriptor.class);
         mapCommonTypeFields(en, d);
 
-        d.setMembers(en.getMembers());
+        if (en.getMembers() != null) {
+            for (String memberName : en.getMembers()) {
+                if (memberName == null || memberName.isBlank()) {
+                    continue;
+                }
+                CSharpEnumMemberDescriptor m = ctx.getStore().create(CSharpEnumMemberDescriptor.class);
+                m.setName(memberName);
+                d.getMembers().add(m);   // Relation anlegen
+            }
+        }
+
         return d;
     }
+
 
     private CSharpRecordDescriptor mapRecord(CSharpRecord rec, ScannerContext ctx) {
         CSharpRecordDescriptor d = ctx.getStore().create(CSharpRecordDescriptor.class);

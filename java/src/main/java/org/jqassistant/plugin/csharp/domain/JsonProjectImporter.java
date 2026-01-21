@@ -43,11 +43,6 @@ public class JsonProjectImporter {
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public JsonProjectImporter(ObjectMapper mapper) {
-        this.objectMapper = Objects.requireNonNull(mapper)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
-
     public CSharpProject importProject(InputStream jsonStream) {
         Objects.requireNonNull(jsonStream, "jsonStream must not be null");
 

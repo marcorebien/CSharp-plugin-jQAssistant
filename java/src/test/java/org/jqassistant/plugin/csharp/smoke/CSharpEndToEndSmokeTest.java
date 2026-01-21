@@ -94,7 +94,17 @@ class CSharpEndToEndSmokeTest {
             when(d.getMethods()).thenReturn(new ArrayList<>());
             when(d.getFields()).thenReturn(new ArrayList<>());
             when(d.getProperties()).thenReturn(new ArrayList<>());
+
+            // WICHTIG: Enum-Members als Kantenliste (wenn dein Descriptor das so modelliert)
+            when(d.getMembers()).thenReturn(new ArrayList<>());
+
             return d;
+        });
+
+// Enum Member Node
+        when(store.create(CSharpEnumMemberDescriptor.class)).thenAnswer(inv -> {
+            CSharpEnumMemberDescriptor m = mock(CSharpEnumMemberDescriptor.class);
+            return m;
         });
 
         // Fallback: Base Type Descriptor (wird bei struct genutzt in deinem Mapper)

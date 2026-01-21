@@ -1,37 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Der *richtige* Parent für jQAssistant Plugins -->
     <parent>
-        <groupId>org.jqassistant.plugin</groupId>
+        <groupId>org.jqassistant.plugin.csharp</groupId>
         <artifactId>parent</artifactId>
-        <version>2.6.0</version>
-        <relativePath/>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.jqassistant.plugin.csharp</groupId>
     <artifactId>csharp-plugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <name>jQAssistant CSharp Plugin</name>
     <description>The jQAssistant plugin providing scanners for CSharp.</description>
     <url>https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</url>
 
+    <properties>
+        <maven.compiler.release>16</maven.compiler.release>
+
+        <!-- Im Modul SOLL jQAssistant laufen -->
+        <jqassistant.skip>false</jqassistant.skip>
+
+        <!-- Store erbt Root-Property aus Parent (Root target) -->
+        <!-- jqassistant.store.directory kommt aus Parent -->
+    </properties>
+
     <dependencies>
-        <!-- Runtime Dependencies -->
+        <!-- Provided by jQAssistant runtime -->
         <dependency>
             <groupId>com.buschmais.jqassistant.core</groupId>
             <artifactId>scanner</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.buschmais.xo</groupId>
-            <artifactId>xo.api</artifactId>
-            <version>2.6.2</version>
         </dependency>
 
         <dependency>
@@ -40,7 +43,13 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- jQA Test Support -->
+        <!-- XO API (Version via parent depMgmt, daher keine Version) -->
+        <dependency>
+            <groupId>com.buschmais.xo</groupId>
+            <artifactId>xo.api</artifactId>
+        </dependency>
+
+        <!-- Test Support -->
         <dependency>
             <groupId>com.buschmais.jqassistant.core</groupId>
             <artifactId>test</artifactId>
@@ -54,11 +63,10 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit -->
+        <!-- JUnit + Mockito + AssertJ -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -68,56 +76,41 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Inline MockMaker (Constructor mocking, static mocking, etc.) -->
         <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-inline</artifactId>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
             <version>5.2.0</version>
-        <scope>test</scope>
+            <scope>test</scope>
         </dependency>
 
-
-        <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
-
             <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
                 <configuration>
-                    <release>16</release>
-                    <source>16</source>
-                    <target>16</target>
+                    <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
 
-            <!-- Javadoc -->
+            <!-- Surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.2</version>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <release>16</release>
+                    <useModulePath>false</useModulePath>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jqassistant.plugin.csharp</groupId>
-                        <artifactId>csharp-plugin</artifactId>
-                        <version>1.0.0-SNAPSHOT</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
-
 
     <developers>
         <developer>
@@ -132,4 +125,5 @@
         <developerConnection>scm:git:https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</developerConnection>
         <url>https://github.com/jqassistant-plugin/CSharp-plugin-jQAssistant.git</url>
     </scm>
+
 </project>

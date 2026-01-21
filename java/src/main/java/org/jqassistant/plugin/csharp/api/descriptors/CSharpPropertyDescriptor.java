@@ -12,9 +12,9 @@ public interface CSharpPropertyDescriptor extends Descriptor {
     String getType();
     void setType(String type);
 
-    Boolean hasGetter();
+    Boolean getHasGetter();
     void setHasGetter(Boolean v);
 
-    Boolean hasSetter();
+    Boolean getHasSetter();
     void setHasSetter(Boolean v);
 }
