@@ -60,7 +60,7 @@ class CSharpProjectScannerPluginIT {
 
         assertTrue(plugin.accepts(fileResource, target.toString(), CSharpScope.PROJECT));
 
-        CSharpProjectDescriptor out = plugin.scan(fileResource, target.toString(), CSharpScope.PROJECT, scanner);
+        CSharpProjectDescriptor out = (CSharpProjectDescriptor) plugin.scan(fileResource, target.toString(), CSharpScope.PROJECT, scanner);
 
         assertNotNull(out);
         assertEquals(target.getFileName().toString(), out.getName());
