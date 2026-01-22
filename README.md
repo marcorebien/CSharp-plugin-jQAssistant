@@ -48,6 +48,8 @@ scopes:
 - name: csharp:project
 
 
+export JAVA_TOOL_OPTIONS="-Djqassistant.csharp.analyzer.csproj=/<path-to-repo>/CSharp-plugin-jQAssistant/csharp/src/CSharpAnalyzer/CSharpAnalyzer.csproj"
+
 
 
 start scan with .\bin\jqassistant scan -f <path to C# project .csproj or .sln> 
